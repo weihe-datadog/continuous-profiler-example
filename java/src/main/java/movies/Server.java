@@ -34,7 +34,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        port(8080);
+        port(9010); // Changed port to 9010 to match the exposed port in Docker
         get("/movies", Server::moviesEndpoint);
 
         exception(Exception.class, (exception, request, response) -> {
