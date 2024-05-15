@@ -24,10 +24,10 @@ This report outlines the performance optimization process undertaken for the `Se
 - Configured Apache JMeter to simulate concurrent users accessing the server, focusing on the endpoints that were optimized.
 
 ### Performance Metrics Before Optimization
-- Average response time: [User to provide or baseline needed]
-- Minimum response time: [User to provide or baseline needed]
-- Maximum response time: [User to provide or baseline needed]
-- Throughput rate: [User to provide or baseline needed]
+- Average response time: 253 milliseconds
+- Minimum response time: 72 milliseconds
+- Maximum response time: 1374 milliseconds
+- Throughput rate: 31.7 requests per second
 - CPU usage: [User to provide or baseline needed]
 - Memory usage: [User to provide or baseline needed]
 
