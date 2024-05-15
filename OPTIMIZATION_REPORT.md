@@ -31,8 +31,8 @@ This report outlines the performance optimization process undertaken for the `Se
 | Minimum Response Time | 72 milliseconds     | 74 milliseconds    |
 | Maximum Response Time | 1374 milliseconds   | 800 milliseconds   |
 | Throughput Rate       | 31.7 requests/sec   | 37 requests/sec    |
-| CPU Usage             | [User to provide or baseline needed] | Decreased |
-| Memory Usage          | [User to provide or baseline needed] | Decreased |
+| CPU Usage             | 1.42%               | Decreased          |
+| Memory Usage          | 865.2 MiB           | Decreased          |
 
 ### Analysis
 - The optimizations led to a measurable improvement in server performance, with faster response times and better scalability under load.
