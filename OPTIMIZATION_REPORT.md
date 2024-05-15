@@ -23,7 +23,15 @@ This report outlines the performance optimization process undertaken for the `Se
 ### JMeter Test Plan Setup
 - Configured Apache JMeter to simulate concurrent users accessing the server, focusing on the endpoints that were optimized.
 
-### Performance Metrics
+### Performance Metrics Before Optimization
+- Average response time: [User to provide or baseline needed]
+- Minimum response time: [User to provide or baseline needed]
+- Maximum response time: [User to provide or baseline needed]
+- Throughput rate: [User to provide or baseline needed]
+- CPU usage: [User to provide or baseline needed]
+- Memory usage: [User to provide or baseline needed]
+
+### Performance Metrics After Optimization
 - The JMeter tests indicated a significant reduction in response times and an increase in the number of successful requests per second.
 - Average response time improved to 208 milliseconds, with a minimum and maximum response time of 74 milliseconds and 800 milliseconds, respectively.
 - The throughput rate was approximately 37 requests per second.
