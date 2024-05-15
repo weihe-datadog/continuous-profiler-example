@@ -1,0 +1,11 @@
+# Package archives
+*.tgz
+
+# Profiling files
+*.jfr
+
+# Log files
+*.log
+
+# Binaries and other executable files
+bin/
