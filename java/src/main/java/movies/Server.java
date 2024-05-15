@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
@@ -26,15 +26,13 @@ import spark.Response;
 public class Server {
     private static final Gson GSON;
     private static volatile List<Movie> CACHED_MOVIES;
-    private static volatile long LAST_CACHE_TIME = 0;
-    private static final long CACHE_DURATION = TimeUnit.MINUTES.toMillis(10); // Cache duration of 10 minutes
 
     static {
         GSON = new GsonBuilder().setLenient().create();
     }
 
     public static void main(String[] args) {
-        port(9010); // Changed port to 9010 to match the exposed port in Docker
+        port(9010); // Updated port to match the Docker container and JMeter tests
         get("/movies", Server::moviesEndpoint);
 
         exception(Exception.class, (exception, request, response) -> {
@@ -49,8 +47,7 @@ public class Server {
         movies = sortByDescReleaseDate(movies);
         var query = req.queryParamOrDefault("q", req.queryParams("query"));
         if (query != null) {
-            final String upperCaseQuery = query.toUpperCase();
-            movies = movies.filter(m -> m.title.toUpperCase().contains(upperCaseQuery));
+            movies = movies.filter(m -> Pattern.matches(".*" + query.toUpperCase() + ".*", m.title.toUpperCase()));
         }
         return replyJSON(res, movies);
     }
@@ -75,27 +72,24 @@ public class Server {
     }
 
     private static List<Movie> getMovies() {
-        if (CACHED_MOVIES != null && System.currentTimeMillis() - LAST_CACHE_TIME < CACHE_DURATION) {
+        if (CACHED_MOVIES != null) {
             return CACHED_MOVIES;
         }
 
-        synchronized (Server.class) {
-            if (CACHED_MOVIES == null || System.currentTimeMillis() - LAST_CACHE_TIME >= CACHE_DURATION) {
-                CACHED_MOVIES = loadMovies();
-                LAST_CACHE_TIME = System.currentTimeMillis();
-            }
-        }
-
-        return CACHED_MOVIES;
+        return loadMovies();
     }
 
-    private static List<Movie> loadMovies() {
+    private synchronized static List<Movie> loadMovies() {
+        if (CACHED_MOVIES != null) {
+            return CACHED_MOVIES;
+        }
+
         try (
             var is = ClassLoader.getSystemResourceAsStream("movies5000.json.gz");
             var gzis = new GZIPInputStream(is);
             var reader = new InputStreamReader(gzis)
         ){
-            return GSON.fromJson(reader, new TypeToken<List<Movie>>() {}.getType());
+            return CACHED_MOVIES = GSON.fromJson(reader, new TypeToken<List<Movie>>() {}.getType());
         } catch (IOException e) {
             throw new RuntimeException("Failed to load movie data");
         }
